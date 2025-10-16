@@ -62,7 +62,9 @@ fn open_or_create_collection_db(path: &Path) -> Result<Connection> {
 
     db.busy_timeout(std::time::Duration::from_secs(0))?;
 
-    db.pragma_update(None, "locking_mode", "exclusive")?;
+    // MICHAEL-NOTE: Disable exclusive locking mode so we can access the DB
+    // from our stats server alongside the self-hosted sync server
+    // db.pragma_update(None, "locking_mode", "exclusive")?;
     db.pragma_update(None, "page_size", 4096)?;
     db.pragma_update(None, "cache_size", -40 * 1024)?;
     db.pragma_update(None, "legacy_file_format", false)?;
